@@ -4,7 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 
-const Image = require('./models/schema.js');
+const Image = require('./models/schema');
 
 
 const app = express();
