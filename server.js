@@ -54,11 +54,13 @@ app.post('/images', postImage);
 
 
 async function postImage(request, response, next) {
-  try {
+  console.log('Have we made it yet?', request.body);
+  try {//UNDERSTAND THIS LINE BETTER
     let createdImage = await Image.create(request.body);
     response.status(201).send(createdImage);
 
   } catch (error) {
+    console.error('PROBLEM POSTING IMAGE',error);
     next(error);
   }
 }
