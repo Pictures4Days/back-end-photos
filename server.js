@@ -10,7 +10,7 @@ const Image = require('./models/schema');
 const app = express();
 app.use(cors());
 app.use(express.json());
-//app.use(verifyUser);
+
 
 const PORT = process.env.PORT || 3002;
 
@@ -22,29 +22,16 @@ db.once('open', function () {
   console.log('Mongoose is connected');
 });
 
-
-app.get('/images/:imageID', getImage);
-
-async function getImage(request, response, next) {
-  try {
-    let id = request.params.imageID;
-
-    let image = await Image.findById(id);
-
-    response.status(200).send(image);
-
-  } catch (error) {
-    next(error);
-  }
-}
+//app.use(verifyUser);
 
 app.get('/images', getImages);
 
 async function getImages(request, response, next) {
+  console.log("request.query.user",request.query.user);
   try {
-    let allImages = await Image.find({});
-
-    response.status(200).send(allImages);
+    let userEmail = request.query.user;
+    let userImages = await Image.find({userEmail});
+    response.status(200).send(userImages);
 
   } catch (error) {
     next(error);
@@ -56,7 +43,7 @@ app.post('/images', postImage);
 
 async function postImage(request, response, next) {
   console.log('Have we made it yet?', request.body);
-  try {//UNDERSTAND THIS LINE BETTER
+  try {
     let createdImage = await Image.create(request.body);
     response.status(201).send(createdImage);
 
@@ -87,7 +74,7 @@ async function updateImage(request, response, next) {
     let id = request.params.imageID;
     let data = request.body;
 
-    const updatedImage = await Image.findByIdAndUpdate(id, data, { new: true, overwrite: true });
+    const updatedImage = await Image.findByIdAndUpdate(id, data,{new: true, overwrite: true });
 
     response.status(200).send(updatedImage);
   } catch (error) {
