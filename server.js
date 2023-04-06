@@ -42,7 +42,7 @@ app.post('/images', postImage);
 
 
 async function postImage(request, response, next) {
-  console.log('Have we made it yet?', request.body);
+  console.log('TO BE SENT TO DB', request.body);
   try {
     let createdImage = await Image.create(request.body);
     response.status(201).send(createdImage);
